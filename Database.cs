@@ -195,6 +195,12 @@ namespace BinaryDatabase
 
                 keyOffset = Marshal.OffsetOf<T>(idField.Name).ToInt32();
             }
+            else
+            {
+                getKey = i => typeof(TKey) == typeof(long) ? (TKey)(object)i : throw new ArgumentException("Index of IdIsIndex table should be long.");
+                setKey = (TKey key, ref T val) => throw new InvalidOperationException("Unable to set key for IdIsIndex database.");
+                keyOffset = 0;
+            }
         }
 
         public void Load()
